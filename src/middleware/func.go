@@ -47,6 +47,14 @@ var AppTokenAuthentication = func(next http.Handler) http.Handler {
 var AddCors = func(next http.Handler) http.Handler {
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		apiUrl := strings.HasPrefix(r.URL.Path, "/api")
+
+		if !apiUrl {
+			next.ServeHTTP(w, r)
+			return
+		}
+
 		allowMethods := []string{http.MethodGet, http.MethodPost, http.MethodDelete, http.MethodOptions}
 
 		w.Header().Add("Access-Control-Allow-Origin", config.App.Cors.AllowedOrigins)
