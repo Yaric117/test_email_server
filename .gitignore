@@ -1,0 +1,6 @@
+.DS_Store
+.idea
+tmp
+
+docker-compose.override.yml
+.env

@@ -1,0 +1,146 @@
+definitions:
+  dto.Response:
+    properties:
+      message:
+        type: string
+      payload: {}
+      status:
+        type: boolean
+    type: object
+  repository.Object:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+      timezone:
+        type: integer
+    type: object
+  repository.ObjectWindow:
+    properties:
+      dateEnd:
+        type: string
+      dateStart:
+        type: string
+      id:
+        type: string
+      object:
+        $ref: '#/definitions/repository.Object'
+      objectId:
+        type: string
+    type: object
+  v1.ResponseCounts:
+    properties:
+      countObjectsAdd:
+        type: integer
+      countWindowsAdd:
+        type: integer
+      errorObjects:
+        type: integer
+      errorWindows:
+        type: integer
+    type: object
+info:
+  contact:
+    email: email@example.com
+    name: API Support
+    url: https://example.com
+paths:
+  /create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Count objects
+        in: body
+        name: countObjects
+        required: true
+        schema:
+          type: string
+      - description: Count object`s windows
+        in: body
+        name: countWindows
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.Response'
+            - properties:
+                payload:
+                  $ref: '#/definitions/v1.ResponseCounts'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Create objects and windows
+      tags:
+      - objects
+  /test:
+    get:
+      consumes:
+      - application/json
+      description: test
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Response'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/dto.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: test
+      tags:
+      - test
+  /windows:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/dto.Response'
+            - properties:
+                payload:
+                  $ref: '#/definitions/repository.ObjectWindow'
+              type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Response'
+      security:
+      - ApiKeyAuth: []
+      summary: Get all windows
+      tags:
+      - windows
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
