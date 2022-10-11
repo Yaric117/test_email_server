@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+
+  app:
+    ports:
+      - "8087:8080"
+    volumes:
+      - .:/app
+
+  postgres:
+    ports:
+      - "5465:5432"
